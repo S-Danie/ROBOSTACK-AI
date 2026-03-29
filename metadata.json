@@ -1,0 +1,7 @@
+{
+  "name": "RoboStack AI - Manipulator Control Center",
+  "description": "A production-ready dashboard and software stack for 6-DOF mobile manipulators featuring YOLOv8 perception and MoveIt 2 integration.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

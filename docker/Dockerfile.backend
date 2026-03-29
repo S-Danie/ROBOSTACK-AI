@@ -1,0 +1,25 @@
+# Backend Dockerfile (ROS2 Humble)
+FROM ros:humble-ros-base
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    ros-humble-rosbridge-server \
+    ros-humble-moveit \
+    ros-humble-ros2-control \
+    ros-humble-ros2-controllers \
+    ros-humble-ign-ros2-control \
+    python3-colcon-common-extensions \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace
+WORKDIR /ros2_ws
+COPY ./backend/src ./src
+
+# Build workspace
+RUN . /opt/ros/humble/setup.sh && colcon build
+
+# Source workspace
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "source /ros2_ws/install/setup.bash" >> ~/.bashrc
+
+CMD ["ros2", "launch", "robot_description", "rosbridge_bringup.launch.py"]

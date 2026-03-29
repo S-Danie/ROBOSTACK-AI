@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  ros_backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    network_mode: host
+    volumes:
+      - ../backend:/ros2_ws
+    environment:
+      - DISPLAY=${DISPLAY}
+    privileged: true
+    restart: always
+
+  react_frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    depends_on:
+      - ros_backend
+    restart: always
